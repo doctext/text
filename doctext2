@@ -1,0 +1,9 @@
+sql = "INSERT INTO tugas (tugas, dosen, deadline) VALUES (%s, %s, %s)"
+values = [
+  ("mk", "buk meta", "2022-08-31"),
+  ("mk", "pak reza", "2022-08-31")
+]
+
+cursor.executemany(sql, values)
+db.commit()
+print(cursor.rowcount, "Data berhasil ditambahkan!")
