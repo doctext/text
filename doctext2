@@ -1,9 +1,19 @@
-sql = "INSERT INTO tugas (tugas, dosen, deadline) VALUES (%s, %s, %s)"
-values = [
-  ("mk", "buk meta", "2022-08-31"),
-  ("mk", "pak reza", "2022-08-31")
-]
+import requests
+from bs4 import BeautifulSoup
+from tabulate import tabulate
 
-cursor.executemany(sql, values)
-db.commit()
-print(cursor.rowcount, "Data berhasil ditambahkan!")
+resp = requests.get('https://scrape.jeyy.xyz/')
+soup = BeautifulSoup(resp.content, 'html.parser')
+
+
+content = soup.find('ul', {'class': 'daftar-lab'})
+data = []
+
+i = 0
+for dat in content.find_all('li'):
+    data.append([])
+    teks = dat.get_text().replace('\n','')
+    data[i].append(teks)
+    i += 1
+
+print(tabulate(data, headers='firstrow'))
